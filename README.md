@@ -80,11 +80,6 @@ git checkout -b feature/nuova-feature
 3. Commit e push delle modifiche
 4. Apri una Pull Request
 
-## 📋 TODO
-
-- [ ] Aggiungere salvataggio configurazioni
-- [ ] Implementare export/import dei dati
-
 ## 🙏 Riconoscimenti
 
 - Ispirato dalle teorie della decisione razionale
