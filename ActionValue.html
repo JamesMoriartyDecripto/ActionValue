@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Calcolatore del Valore di un'Azione</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .formula {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 10px;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .slider {
+            width: 100%;
+        }
+        .result {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        .positive {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .neutral {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .negative {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        label {
+            font-weight: bold;
+        }
+        .value {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calcolatore del Valore di un'Azione</h1>
+        
+        <div class="formula">
+            \[V_{azione} = \frac{B \cdot P \cdot I}{T + E + S} \cdot (1 + O) \cdot (1 + C) \cdot (1 - R)\]
+        </div>
+
+        <div class="controls">
+            <label for="B">Benefici (B):</label>
+            <input type="range" id="B" class="slider" min="0" max="1" step="0.01" value="0.5">
+            <span id="B-value" class="value">0.5</span>
+        </div>
+
+        <div class="controls">
+            <label for="P">Probabilità (P):</label>
+            <input type="range" id="P" class="slider" min="0" max="1" step="0.01" value="0.5">
+            <span id="P-value" class="value">0.5</span>
+        </div>
+
+        <div class="controls">
+            <label for="I">Impatto (I):</label>
+            <input type="range" id="I" class="slider" min="0" max="1" step="0.01" value="0.5">
+            <span id="I-value" class="value">0.5</span>
+        </div>
+
+        <div class="controls">
+            <label for="T">Tempo (T):</label>
+            <input type="range" id="T" class="slider" min="0" max="1" step="0.01" value="0.25">
+            <span id="T-value" class="value">0.25</span>
+        </div>
+
+        <div class="controls">
+            <label for="E">Energia (E):</label>
+            <input type="range" id="E" class="slider" min="0" max="1" step="0.01" value="0.25">
+            <span id="E-value" class="value">0.25</span>
+        </div>
+
+        <div class="controls">
+            <label for="S">Stress (S):</label>
+            <input type="range" id="S" class="slider" min="0" max="1" step="0.01" value="0.25">
+            <span id="S-value" class="value">0.25</span>
+        </div>
+
+        <div class="controls">
+            <label for="O">Opportunità (O):</label>
+            <input type="range" id="O" class="slider" min="0" max="1" step="0.01" value="0.5">
+            <span id="O-value" class="value">0.5</span>
+        </div>
+
+        <div class="controls">
+            <label for="C">Coerenza (C):</label>
+            <input type="range" id="C" class="slider" min="0" max="1" step="0.01" value="0.5">
+            <span id="C-value" class="value">0.5</span>
+        </div>
+
+        <div class="controls">
+            <label for="R">Rischi (R):</label>
+            <input type="range" id="R" class="slider" min="0" max="1" step="0.01" value="0.25">
+            <span id="R-value" class="value">0.25</span>
+        </div>
+
+        <div id="result" class="result neutral">
+            Calcolo in corso...
+        </div>
+    </div>
+
+    <script>
+        function updateValue(id) {
+            const slider = document.getElementById(id);
+            const value = document.getElementById(id + '-value');
+            value.textContent = parseFloat(slider.value).toFixed(2);
+        }
+
+        function calculateValue() {
+            const B = parseFloat(document.getElementById('B').value);
+            const P = parseFloat(document.getElementById('P').value);
+            const I = parseFloat(document.getElementById('I').value);
+            const T = parseFloat(document.getElementById('T').value);
+            const E = parseFloat(document.getElementById('E').value);
+            const S = parseFloat(document.getElementById('S').value);
+            const O = parseFloat(document.getElementById('O').value);
+            const C = parseFloat(document.getElementById('C').value);
+            const R = parseFloat(document.getElementById('R').value);
+
+            const denominator = T + E + S;
+            if (denominator === 0) return 0;
+
+            const V = (B * P * I / denominator) * (1 + O) * (1 + C) * (1 - R);
+            const result = document.getElementById('result');
+            
+            let message = `Valore calcolato: ${V.toFixed(3)}<br>`;
+            let className = 'result ';
+            
+            if (V > 0.8) {
+                message += "Altamente consigliato";
+                className += 'positive';
+            } else if (V > 0.5) {
+                message += "Vale probabilmente la pena";
+                className += 'positive';
+            } else if (V > 0.3) {
+                message += "Da valutare attentamente";
+                className += 'neutral';
+            } else {
+                message += "Probabilmente non vale la pena";
+                className += 'negative';
+            }
+            
+            result.innerHTML = message;
+            result.className = className;
+        }
+
+        // Add event listeners to all sliders
+        const sliders = document.querySelectorAll('.slider');
+        sliders.forEach(slider => {
+            slider.addEventListener('input', () => {
+                updateValue(slider.id);
+                calculateValue();
+            });
+        });
+
+        // Initial calculation
+        calculateValue();
+    </script>
+</body>
+</html>
