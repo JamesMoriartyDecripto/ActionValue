@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Calcolatore del valore di un'azione</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script 
+src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,67 +60,138 @@
         .value {
             text-align: right;
         }
+        .import-export {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .name-input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        #savedConfigurations {
+            margin: 10px 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .saved-config {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background-color: #f8f9fa;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Calcolatore del Valore di un'Azione</h1>
+        <h1>Calcolatore del valore di un'azione</h1>
+        <p>Quanto vale la pena fare una determinata cosa?</p>
         
         <div class="formula">
-            \[V_{azione} = \frac{B \cdot P \cdot I}{T + E + S} \cdot (1 + O) \cdot (1 + C) \cdot (1 - R)\]
+            \[V_{azione} = \frac{B \cdot P \cdot I}{T + E + S} \cdot (1 + 
+O) \cdot (1 + C) \cdot (1 - R)\]
+        </div>
+
+        <div class="import-export">
+            <input type="text" id="configName" class="name-input" 
+placeholder="Nome configurazione">
+            <div class="action-buttons">
+                <button onclick="saveCurrentConfig()">Salva 
+Configurazione</button>
+                <button onclick="exportConfigs()">Esporta 
+Configurazioni</button>
+                <button 
+onclick="document.getElementById('importFile').click()">Importa 
+Configurazioni</button>
+                <input type="file" id="importFile" style="display: none" 
+onchange="importConfigs(this)">
+            </div>
+            <div id="savedConfigurations"></div>
         </div>
 
         <div class="controls">
             <label for="B">Benefici (B):</label>
-            <input type="range" id="B" class="slider" min="0" max="1" step="0.01" value="0.5">
+            <input type="range" id="B" class="slider" min="0" max="1" 
+step="0.01" value="0.5">
             <span id="B-value" class="value">0.5</span>
         </div>
 
         <div class="controls">
             <label for="P">Probabilità (P):</label>
-            <input type="range" id="P" class="slider" min="0" max="1" step="0.01" value="0.5">
+            <input type="range" id="P" class="slider" min="0" max="1" 
+step="0.01" value="0.5">
             <span id="P-value" class="value">0.5</span>
         </div>
 
         <div class="controls">
             <label for="I">Impatto (I):</label>
-            <input type="range" id="I" class="slider" min="0" max="1" step="0.01" value="0.5">
+            <input type="range" id="I" class="slider" min="0" max="1" 
+step="0.01" value="0.5">
             <span id="I-value" class="value">0.5</span>
         </div>
 
         <div class="controls">
             <label for="T">Tempo (T):</label>
-            <input type="range" id="T" class="slider" min="0" max="1" step="0.01" value="0.25">
+            <input type="range" id="T" class="slider" min="0" max="1" 
+step="0.01" value="0.25">
             <span id="T-value" class="value">0.25</span>
         </div>
 
         <div class="controls">
             <label for="E">Energia (E):</label>
-            <input type="range" id="E" class="slider" min="0" max="1" step="0.01" value="0.25">
+            <input type="range" id="E" class="slider" min="0" max="1" 
+step="0.01" value="0.25">
             <span id="E-value" class="value">0.25</span>
         </div>
 
         <div class="controls">
             <label for="S">Stress (S):</label>
-            <input type="range" id="S" class="slider" min="0" max="1" step="0.01" value="0.25">
+            <input type="range" id="S" class="slider" min="0" max="1" 
+step="0.01" value="0.25">
             <span id="S-value" class="value">0.25</span>
         </div>
 
         <div class="controls">
             <label for="O">Opportunità (O):</label>
-            <input type="range" id="O" class="slider" min="0" max="1" step="0.01" value="0.5">
+            <input type="range" id="O" class="slider" min="0" max="1" 
+step="0.01" value="0.5">
             <span id="O-value" class="value">0.5</span>
         </div>
 
         <div class="controls">
             <label for="C">Coerenza (C):</label>
-            <input type="range" id="C" class="slider" min="0" max="1" step="0.01" value="0.5">
+            <input type="range" id="C" class="slider" min="0" max="1" 
+step="0.01" value="0.5">
             <span id="C-value" class="value">0.5</span>
         </div>
 
         <div class="controls">
             <label for="R">Rischi (R):</label>
-            <input type="range" id="R" class="slider" min="0" max="1" step="0.01" value="0.25">
+            <input type="range" id="R" class="slider" min="0" max="1" 
+step="0.01" value="0.25">
             <span id="R-value" class="value">0.25</span>
         </div>
 
@@ -129,12 +201,181 @@
     </div>
 
     <script>
+        // Inizializzazione delle configurazioni
+        let configurazioni = [];
+        
+        // Carica le configurazioni dal localStorage all'avvio
+        function initConfigurations() {
+            try {
+                const savedConfigs = localStorage.getItem('configurazioni');
+                configurazioni = savedConfigs ? JSON.parse(savedConfigs) : [];
+            } catch (e) {
+                console.error('Errore nel caricamento delle configurazioni:', e);
+                configurazioni = [];
+            }
+            updateConfigList();
+        }
+    
+        // Aggiorna la lista delle configurazioni visualizzate
+        function updateConfigList() {
+            const container = document.getElementById('savedConfigurations');
+            container.innerHTML = '';
+            
+            configurazioni.forEach((config, index) => {
+                const div = document.createElement('div');
+                div.className = 'saved-config';
+                div.innerHTML = `
+                    <span>${config.name || 'Configurazione ' + (index + 1)}</span>
+                    <div class="config-buttons">
+                        <button onclick="loadConfiguration(${index})">Carica</button>
+                        <button onclick="deleteConfiguration(${index})">Elimina</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+    
+        // Salva una nuova configurazione
+        function saveCurrentConfig() {
+            const newConfig = {
+                name: document.getElementById('configName').value || 'Configurazione ' + (configurazioni.length + 1),
+                values: {
+                    B: document.getElementById('B').value,
+                    P: document.getElementById('P').value,
+                    I: document.getElementById('I').value,
+                    T: document.getElementById('T').value,
+                    E: document.getElementById('E').value,
+                    S: document.getElementById('S').value,
+                    O: document.getElementById('O').value,
+                    C: document.getElementById('C').value,
+                    R: document.getElementById('R').value
+                },
+                timestamp: new Date().toISOString()
+            };
+    
+            configurazioni.push(newConfig);
+            localStorage.setItem('configurazioni', JSON.stringify(configurazioni));
+            updateConfigList();
+            document.getElementById('configName').value = '';
+        }
+    
+        // Carica una configurazione esistente
+        function loadConfiguration(index) {
+            if (index >= 0 && index < configurazioni.length) {
+                const config = configurazioni[index];
+                const values = config.values;
+                
+                Object.keys(values).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.value = values[key];
+                        updateValue(key);
+                    }
+                });
+                
+                calculateValue();
+            }
+        }
+    
+        // Elimina una configurazione
+        function deleteConfiguration(index) {
+            if (confirm('Sei sicuro di voler eliminare questa configurazione?')) {
+                configurazioni.splice(index, 1);
+                localStorage.setItem('configurazioni', JSON.stringify(configurazioni));
+                updateConfigList();
+            }
+        }
+    
+        // Esporta le configurazioni
+        function exportConfigs() {
+            const dataStr = JSON.stringify(configurazioni, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'value-calculator-config.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    
+        // Importa le configurazioni
+        function importConfigs(input) {
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedConfigs = JSON.parse(e.target.result);
+                    if (Array.isArray(importedConfigs)) {
+                        // Merge delle configurazioni
+                        const mergedConfigs = [...configurazioni];
+                        let newConfigsCount = 0;
+                        
+                        importedConfigs.forEach(importedConfig => {
+                            // Aggiungi un timestamp se non presente
+                            if (!importedConfig.timestamp) {
+                                importedConfig.timestamp = new Date().toISOString();
+                            }
+                            
+                            // Controlla se una configurazione simile esiste già
+                            const isDuplicate = mergedConfigs.some(existing => 
+                                existing.timestamp === importedConfig.timestamp &&
+                                existing.name === importedConfig.name
+                            );
+                            
+                            if (!isDuplicate) {
+                                // Se è un nuovo nome ma esiste già, aggiungi un numero progressivo
+                                const baseName = importedConfig.name;
+                                let nameCounter = 1;
+                                let newName = baseName;
+                                
+                                while (mergedConfigs.some(config => config.name === newName)) {
+                                    nameCounter++;
+                                    newName = `${baseName} (${nameCounter})`;
+                                }
+                                
+                                importedConfig.name = newName;
+                                mergedConfigs.push(importedConfig);
+                                newConfigsCount++;
+                            }
+                        });
+
+                        // Aggiorna l'array delle configurazioni e il localStorage
+                        configurazioni = mergedConfigs;
+                        localStorage.setItem('configurazioni', JSON.stringify(configurazioni));
+                        updateConfigList();
+                        
+                        // Mostra un messaggio appropriato
+                        if (newConfigsCount > 0) {
+                            alert(`Importate con successo ${newConfigsCount} nuove configurazioni!`);
+                        } else {
+                            alert('Nessuna nuova configurazione da importare.');
+                        }
+                    } else {
+                        throw new Error('Formato file non valido');
+                    }
+                } catch (error) {
+                    alert('Errore durante l\'importazione: ' + error.message);
+                }
+                
+                // Reset del campo file
+                input.value = '';
+            };
+            reader.readAsText(file);
+        }
+    }
+    
+        // Funzioni utility esistenti
         function updateValue(id) {
             const slider = document.getElementById(id);
             const value = document.getElementById(id + '-value');
-            value.textContent = parseFloat(slider.value).toFixed(2);
+            if (slider && value) {
+                value.textContent = parseFloat(slider.value).toFixed(2);
+            }
         }
-
+    
         function calculateValue() {
             const B = parseFloat(document.getElementById('B').value);
             const P = parseFloat(document.getElementById('P').value);
@@ -145,10 +386,10 @@
             const O = parseFloat(document.getElementById('O').value);
             const C = parseFloat(document.getElementById('C').value);
             const R = parseFloat(document.getElementById('R').value);
-
+    
             const denominator = T + E + S;
             if (denominator === 0) return 0;
-
+    
             const V = (B * P * I / denominator) * (1 + O) * (1 + C) * (1 - R);
             const result = document.getElementById('result');
             
@@ -172,18 +413,21 @@
             result.innerHTML = message;
             result.className = className;
         }
-
-        // Add event listeners to all sliders
-        const sliders = document.querySelectorAll('.slider');
-        sliders.forEach(slider => {
-            slider.addEventListener('input', () => {
-                updateValue(slider.id);
-                calculateValue();
+    
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const sliders = document.querySelectorAll('.slider');
+            sliders.forEach(slider => {
+                slider.addEventListener('input', () => {
+                    updateValue(slider.id);
+                    calculateValue();
+                });
             });
+    
+            // Inizializzazione
+            initConfigurations();
+            calculateValue();
         });
-
-        // Initial calculation
-        calculateValue();
     </script>
 </body>
 </html>
